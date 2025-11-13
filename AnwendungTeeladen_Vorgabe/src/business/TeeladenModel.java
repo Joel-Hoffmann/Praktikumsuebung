@@ -1,10 +1,13 @@
 package business;
 
-import java.io.BufferedReader;
+
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import fileCreatorsHoffmann.ConcreteCsvReaderCreator;
+import fileCreatorsHoffmann.ConcreteTxtReaderCreator;
+import fileCreatorsHoffmann.ReaderCreator;
+import fileCreatorsHoffmann.ReaderProduct;
 
 public class TeeladenModel {
 
@@ -26,11 +29,20 @@ public class TeeladenModel {
 	}
 	
 	// Methoden / Datenverarbeitung	
-	public void leseAusDatei(String typ) throws IOException {
-		BufferedReader ein = new BufferedReader(new FileReader("Teesorte.csv"));
-		String[] zeile = ein.readLine().split(";");
+	public void leseAusCsvDatei() throws IOException {
+		ReaderCreator rc = new ConcreteCsvReaderCreator();
+		ReaderProduct rp = rc.factoryMethod();
+		String[] zeile = rp.leseAusDatei();
 		createTeesorte(Integer.parseInt(zeile[0]), zeile[1], zeile[2], zeile[3], zeile[4].split("_"));
-		ein.close();
+		rp.schliesseDatei();
+	}	
+	
+	public void leseAusTxtDatei() throws IOException {
+		ReaderCreator rc = new ConcreteTxtReaderCreator();
+		ReaderProduct rp = rc.factoryMethod();
+		String[] zeile = rp.leseAusDatei();
+		createTeesorte(Integer.parseInt(zeile[0]), zeile[1], zeile[2], zeile[3], zeile[4].split("_"));
+		rp.schliesseDatei();
 	}	
 	
 	public void schreibeTeesInCsvDatei() throws IOException {

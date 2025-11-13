@@ -67,7 +67,7 @@ public class Teesorte {
 	}
 	
 	public String gibTeesorteZurueck(char trenner){
-  		return this.getIdentnummer() + trenner 
+  		return this.getIdentnummer() + "" + trenner 
   			+ this.getBezeichnung() + trenner
   			+ this.getKategorie() + trenner
   		    + this.getMitKoffein() + trenner + "\n"
