@@ -147,13 +147,13 @@ public class TeeladenView {
 	    mnItmCsvImport.setOnAction(new EventHandler<ActionEvent>() {
 	    	@Override
 	        public void handle(ActionEvent e) {
-	       	 	tc.leseAusDatei("csv");
+	       	 	tc.leseAusCsv();
 	    	}
 	    });
 	    mnItmTxtImport.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override
 		    public void handle(ActionEvent e) {
-		     	tc.leseAusDatei("txt");
+		     	tc.leseAusTxt();
 		    }
     	});
 	    mnItmCsvExport.setOnAction(new EventHandler<ActionEvent>() {
@@ -174,7 +174,7 @@ public class TeeladenView {
        	"Fehler", meldung).zeigeMeldungsfensterAn();
    }
    
-	private void zeigeTeesorteAn() {
+   private void zeigeTeesorteAn() {
 		if (tm.getTs() != null) {
 			txtAnzeige.setText(tm.getTs().gibTeesorteZurueck(' '));
 		} else {

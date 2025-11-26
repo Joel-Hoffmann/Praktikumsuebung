@@ -29,22 +29,28 @@ public class TeeladenControl {
 			tv.zeigeFehlermeldungsfensterAn(exc.getMessage());
 		}
 	}
+		
+	void leseAusCsv() {
+	    try {
+	        tm.leseAusCsvDatei();
+	        tv.zeigeInformationsfensterAn("Die Teesorte wurde gelesen!");
+	    } catch (IOException exc) {
+	        tv.zeigeFehlermeldungsfensterAn("IOException beim Lesen!");
+	    } catch (Exception exc) {
+	        tv.zeigeFehlermeldungsfensterAn("Unbekannter Fehler beim Lesen!");
+	    }
+	}
 	
-	void leseAusDatei(String typ) {
-		try {
-			if ("csv".equals(typ)) {
-				tm.leseAusCsvDatei(typ);
-				tv.zeigeInformationsfensterAn("Die Teesorte wurde gelesen!");
-			} else {
-				tm.leseAusTxtDatei(typ);
-				tv.zeigeInformationsfensterAn("Die Teesorte wurde gelesen!");
-			}
-		} catch (IOException exc) {
-			tv.zeigeFehlermeldungsfensterAn("IOException beim Lesen!");
-		} catch (Exception exc) {
-			tv.zeigeFehlermeldungsfensterAn("Unbekannter Fehler beim Lesen!");
-		}
-	}	
+	void leseAusTxt() {
+	    try {
+	        tm.leseAusTxtDatei();
+	        tv.zeigeInformationsfensterAn("Die Teesorte wurde gelesen!");
+	    } catch (IOException exc) {
+	        tv.zeigeFehlermeldungsfensterAn("IOException beim Lesen!");
+	    } catch (Exception exc) {
+	        tv.zeigeFehlermeldungsfensterAn("Unbekannter Fehler beim Lesen!");
+	    }
+	}
 	
 	void schreibeTeesInCsvDatei() {
 		try {
