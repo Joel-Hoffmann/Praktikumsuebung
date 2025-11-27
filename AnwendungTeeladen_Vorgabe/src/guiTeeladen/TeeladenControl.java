@@ -1,11 +1,12 @@
-package gui;
+package guiTeeladen;
 
 import java.io.IOException;
 
 import business.TeeladenModel;
 import javafx.stage.Stage;
+import ownUtil.Observer;
 
-public class TeeladenControl {
+public class TeeladenControl implements Observer{
 
 	// Attribute / Objekte
 	private TeeladenView tv;
@@ -14,7 +15,8 @@ public class TeeladenControl {
 	// Konstruktor
 	public TeeladenControl(Stage primaryStage) {
 		
-		this.tm = new TeeladenModel();
+		this.tm = TeeladenModel.getInstance();
+		this.tm.addObserver(this);
 		this.tv = new TeeladenView(primaryStage, this, tm);
 		
 	}
@@ -24,7 +26,7 @@ public class TeeladenControl {
 		try {
 			tm.createTeesorte(Integer.parseInt(tv.txtIdentnummer.getText()), tv.txtBezeichnung.getText(),
 							  tv.txtKategorie.getText(), tv.txtMitKoffein.getText(), tv.txtEnthalteneKraeuter.getText().split(";"));
-			tv.zeigeInformationsfensterAn("Die Teesorte wurde aufgenommen!");
+//			tv.zeigeInformationsfensterAn("Die Teesorte wurde aufgenommen!");
 		} catch (Exception exc) {
 			tv.zeigeFehlermeldungsfensterAn(exc.getMessage());
 		}
@@ -65,5 +67,10 @@ public class TeeladenControl {
 			tv.zeigeFehlermeldungsfensterAn(
 				"Unbekannter Fehler beim Speichern!");
 		}
+	}
+
+	@Override
+	public void update() {
+		tv.zeigeTeesorteAn();
 	}
 }

@@ -1,4 +1,4 @@
-package gui;
+package guiTeeladen;
 
 import business.TeeladenModel;
 import javafx.event.ActionEvent;
@@ -174,7 +174,7 @@ public class TeeladenView {
        	"Fehler", meldung).zeigeMeldungsfensterAn();
    }
    
-   private void zeigeTeesorteAn() {
+   void zeigeTeesorteAn() {
 		if (tm.getTs() != null) {
 			txtAnzeige.setText(tm.getTs().gibTeesorteZurueck(' '));
 		} else {
