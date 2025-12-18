@@ -1,6 +1,7 @@
 package guiWarenuebersicht;
 
 import business.TeeladenModel;
+import business.Teesorte;
 import javafx.event.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -57,18 +58,17 @@ public class WarenuebersichtView {
    }
    
    private void initListener() {
-	    btnAnzeigeTees.setOnAction(
- 			new EventHandler<ActionEvent>() {
-	    		@Override
-	        	public void handle(ActionEvent e) {
-	            	zeigeTeesAn();
-	        	} 
-   	    });
+	   
+	    btnAnzeigeTees.setOnAction(e -> zeigeTeesAn());
+
     }
    
     public void zeigeTeesAn(){
-    		if(teesModel.getTs() != null){
-    			txtAnzeigeTees.setText(teesModel.getTs().gibTeesorteZurueck(' '));
+    		if (teesModel.getTs().size() > 0) {
+    			StringBuffer text = new StringBuffer();
+    			for(Teesorte ts : teesModel.getTs())
+    				text.append(ts.gibTeesorteZurueck(' ') + "\n");
+    			txtAnzeigeTees.setText(text.toString());
     		}
     		else{
     			zeigeInformationsfensterAn(

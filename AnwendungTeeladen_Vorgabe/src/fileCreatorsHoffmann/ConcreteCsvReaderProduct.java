@@ -3,6 +3,8 @@ package fileCreatorsHoffmann;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConcreteCsvReaderProduct extends ReaderProduct {
 	
@@ -10,17 +12,25 @@ public class ConcreteCsvReaderProduct extends ReaderProduct {
 	
 	public ConcreteCsvReaderProduct() throws IOException {
 		super();
-		this.br = new BufferedReader(new FileReader("Teesorte.csv"));
+		this.br = new BufferedReader(new FileReader("TeesortenAusgabe.csv"));
 	}
-
-	@Override
-	public String[] leseAusDatei() throws IOException {
-		String[] zeile = br.readLine().split(";");
-		return zeile;
-	}
-
+	
 	@Override
 	public void schliesseDatei() throws IOException {
 		br.close();		
 	}
+	
+	@Override
+	public List<String[]> leseAusDatei() throws IOException {
+		List<String[]> daten = new ArrayList<>();
+		String line;
+		
+		while((line = br.readLine()) != null) {
+			daten.add(line.split(";"));
+		}
+
+		return daten;
+	}
 }
+
+

@@ -1,6 +1,7 @@
 package guiTeeladen;
 
 import business.TeeladenModel;
+import business.Teesorte;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -132,36 +133,17 @@ public class TeeladenView {
    }
    
    private void initListener() {
-	    btnEingabe.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-        	    tc.nehmeTeeAuf();
-            }
-	    });
-	    btnAnzeige.setOnAction(new EventHandler<ActionEvent>() {
-	    	@Override
-	        public void handle(ActionEvent e) {
-	            zeigeTeesorteAn();
-	        } 
-   	    });
-	    mnItmCsvImport.setOnAction(new EventHandler<ActionEvent>() {
-	    	@Override
-	        public void handle(ActionEvent e) {
-	       	 	tc.leseAusCsv();
-	    	}
-	    });
-	    mnItmTxtImport.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent e) {
-		     	tc.leseAusTxt();
-		    }
-    	});
-	    mnItmCsvExport.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				tc.schreibeTeesInCsvDatei();
-			}	
-	    });
+	   
+	    btnEingabe.setOnAction(e -> tc.nehmeTeeAuf());
+
+	    btnAnzeige.setOnAction(e -> tm.notifyObservers());
+
+	    mnItmCsvImport.setOnAction(e -> tc.leseAusCsv());
+
+	    mnItmTxtImport.setOnAction(e -> tc.leseAusTxt());
+
+	    mnItmCsvExport.setOnAction(e -> tc.schreibeTeesInCsvDatei());
+
     }	
    
    void zeigeInformationsfensterAn(String meldung){
@@ -175,8 +157,11 @@ public class TeeladenView {
    }
    
    void zeigeTeesorteAn() {
-		if (tm.getTs() != null) {
-			txtAnzeige.setText(tm.getTs().gibTeesorteZurueck(' '));
+		if (tm.getTs().size() > 0) {
+			StringBuffer text = new StringBuffer();
+			for(Teesorte ts : tm.getTs())
+				text.append(ts.gibTeesorteZurueck(' ') + "\n");
+			txtAnzeige.setText(text.toString());
 		} else {
 			zeigeInformationsfensterAn("Bisher wurde keine Teesorte aufgenommen!");
 		}

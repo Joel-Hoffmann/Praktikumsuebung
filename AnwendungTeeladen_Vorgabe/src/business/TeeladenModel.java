@@ -4,6 +4,7 @@ package business;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -17,8 +18,8 @@ import ownUtil.Observer;
 public class TeeladenModel implements Observable {
 
 	// Attribute / Objekte
-	private Teesorte ts;
-	
+	private ArrayList<Teesorte> teesorten = new ArrayList<Teesorte>();
+
 	// Liste von Observern
 	private Vector<Observer> observer = new Vector<Observer>();
 	
@@ -40,25 +41,27 @@ public class TeeladenModel implements Observable {
 	
 	// Konstruktormethode
 	public void createTeesorte(int identnummer, String bezeichnung, String kategorie,String mitKoffein, String[] enthalteneKraeuter) {
-		this.ts = new Teesorte(identnummer, bezeichnung, kategorie, mitKoffein, enthalteneKraeuter);
-		notifyObservers();
+		Teesorte ts = new Teesorte(identnummer, bezeichnung, kategorie, mitKoffein, enthalteneKraeuter);
+		addTeesorte(ts);
 	}
 	
 	// Getter & Setter
-	public Teesorte getTs() {
-		return ts;
+	public ArrayList<Teesorte> getTs() {
+		return this.teesorten;
 	}
 
-	public void setTs(Teesorte ts) {
-		this.ts = ts;
+	public void addTeesorte(Teesorte ts) {
+		this.teesorten.add(ts);
 	}
 	
 	// Methoden / Datenverarbeitung	
 	public void leseAusCsvDatei() throws IOException {
 		ReaderCreator rc = new ConcreteCsvReaderCreator();
 		ReaderProduct rp = rc.factoryMethod();
-		String[] zeile = rp.leseAusDatei();
-		createTeesorte(Integer.parseInt(zeile[0]), zeile[1], zeile[2], zeile[3], zeile[4].split("_"));
+		List<String[]> zeile = rp.leseAusDatei();
+		for(String[] z : zeile) {
+			createTeesorte(Integer.parseInt(z[0]), z[1], z[2], z[3], z[4].split("_"));
+		}
 		rp.schliesseDatei();
 		notifyObservers();
 	}	
@@ -66,15 +69,19 @@ public class TeeladenModel implements Observable {
 	public void leseAusTxtDatei() throws IOException {
 		ReaderCreator rc = new ConcreteTxtReaderCreator();
 		ReaderProduct rp = rc.factoryMethod();
-		String[] zeile = rp.leseAusDatei();
-		createTeesorte(Integer.parseInt(zeile[0]), zeile[1], zeile[2], zeile[3], zeile[4].split("_"));
+		List<String[]> zeile = rp.leseAusDatei();
+		for(String[] z : zeile) {
+			createTeesorte(Integer.parseInt(z[0]), z[1], z[2], z[3], z[4].split("_"));
+		}
 		rp.schliesseDatei();
 		notifyObservers();
 	}	
 	
 	public void schreibeTeesInCsvDatei() throws IOException {
 		BufferedWriter aus = new BufferedWriter(new FileWriter("TeesortenAusgabe.csv", true));
-		aus.write(ts.gibTeesorteZurueck(';'));
+		for(Teesorte ts : this.teesorten)
+			aus.write(ts.gibTeesorteZurueck(';'));
+		
 		aus.close();
 	}
 
