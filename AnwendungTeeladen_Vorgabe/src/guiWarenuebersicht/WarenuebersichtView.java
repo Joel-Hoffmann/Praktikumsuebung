@@ -16,25 +16,25 @@ public class WarenuebersichtView {
 	private WarenuebersichtControl warenuebersichtControl;
 	private TeeladenModel teesModel;
 	
-    	//---Anfang Attribute der grafischen Oberflaeche---
-    	private Pane pane = new  Pane();
-    	private Label lblAnzeigeTees     
- 		= new Label("Anzeige Tees");
-    	private TextArea txtAnzeigeTees  = new TextArea();
-    	private Button btnAnzeigeTees = new Button("Anzeige");
-    	//-------Ende Attribute der grafischen Oberflaeche-------
-    
-    	public WarenuebersichtView(WarenuebersichtControl warenuebersichtControl, Stage primaryStage, TeeladenModel teesModel){
-    		Scene scene = new Scene(this.pane, 560, 340);
-    		primaryStage.setScene(scene);
-    		primaryStage.setTitle("Anzeige der Warenuebersicht");
-    		primaryStage.show();
-    		this.warenuebersichtControl 
- 			= warenuebersichtControl;
- 		this.teesModel = teesModel;
- 		this.initKomponenten();
-		this.initListener();
-    	}
+	//---Anfang Attribute der grafischen Oberflaeche---
+	private Pane pane = new  Pane();
+	private Label lblAnzeigeTees     
+	= new Label("Anzeige Tees");
+	private TextArea txtAnzeigeTees  = new TextArea();
+	private Button btnAnzeigeTees = new Button("Anzeige");
+	//-------Ende Attribute der grafischen Oberflaeche-------
+
+	public WarenuebersichtView(WarenuebersichtControl warenuebersichtControl, Stage primaryStage, TeeladenModel teesModel){
+		Scene scene = new Scene(this.pane, 560, 340);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Anzeige der Warenuebersicht");
+		primaryStage.show();
+		this.warenuebersichtControl 
+		= warenuebersichtControl;
+	this.teesModel = teesModel;
+	this.initKomponenten();
+	this.initListener();
+	}
 
  	private void initKomponenten(){
     	// Label

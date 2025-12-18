@@ -12,7 +12,7 @@ public class ConcreteCsvReaderProduct extends ReaderProduct {
 	
 	public ConcreteCsvReaderProduct() throws IOException {
 		super();
-		this.br = new BufferedReader(new FileReader("TeesortenAusgabe.csv"));
+		this.br = new BufferedReader(new FileReader("Teesorte.csv"));
 	}
 	
 	@Override

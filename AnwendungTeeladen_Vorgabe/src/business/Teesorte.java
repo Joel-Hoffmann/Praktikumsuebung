@@ -8,13 +8,17 @@ public class Teesorte {
     private String mitKoffein;
     private String[] enthalteneKraeuter;
     
-    public Teesorte(int identnummer, String bezeichnung, String kategorie,
-       	String mitKoffein, String[] enthalteneKraeuter){
+    public Teesorte(int identnummer, String bezeichnung, String kategorie, String mitKoffein, String[] enthalteneKraeuter){
+    	
+    	if(enthalteneKraeuter == null) {
+    		throw new IllegalArgumentException();
+    	}
+    	
     	this.identnummer = identnummer;
       	this.bezeichnung = bezeichnung;
        	this.kategorie = kategorie;
        	this.mitKoffein = mitKoffein;
-       	this.enthalteneKraeuter = enthalteneKraeuter;
+       	this.enthalteneKraeuter = enthalteneKraeuter;  	
     }
 
 	public int getIdentnummer() {

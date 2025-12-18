@@ -14,14 +14,19 @@ class TeesorteTest {
 	void tearDown() throws Exception {
 		this.t = null;
 	}
+	
+	//Testfall: 325, GutenTagTee, ja, SchwarzerTee, Zitrone 
 
 	@Test
 	void test() {
-		this.t = new Teesorte(8, "Wintertee", "Kraeutertee", "ohne K.", new String[] {"Zimtbluete"});
-		assertTrue(() -> this.t.getBezeichnung().equals("Wintertee"));
-		assertTrue(() -> this.t.getKategorie().equals("Kraeutertee"));
-	}
+		this.t = new Teesorte(325, "GutenTagTee", "SchwarzerTee", "ja", new String[] {"Zitrone"});
+		assertTrue(() -> this.t.getBezeichnung().equals("GutenTagTee"));
+		
+		Throwable exc = assertThrows(IllegalArgumentException.class, () -> {new Teesorte(325, "GutenTagTee", "SchwarzerTee", "ja", null);});
+		
+	} 
 }
+
 
 
 
