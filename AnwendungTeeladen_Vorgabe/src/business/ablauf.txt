@@ -1,0 +1,18 @@
+1. Teekanne Klasse einfügen
+2. Teekannen.csv erstellen (Leerzeichen!)
+3. TeekanneModel erstellen + als Singleton umschreiben
+4. Warenuebersicht Control anpassen:
+
+        1. Modelattribut ergänzen
+        2. im Konstruktor per getInstance initialisieren & bei View Konstruktor in die Parameterliste schreiben
+        3. Fehlerabfangmethode vom CSV Reader aus dem Model ergänzen, einfach aus anderer Control kopieren
+
+5. Warenuebersicht View anpassen:
+
+        1. Fehlermethode ergänzen aus anderer View
+        2. Modelattribut ergänzen
+        3. im Konstruktorparameterliste und dann innerhalb initialisieren
+        4. Textarea, Button und Label für Teekannen ergänzen. 
+        5. InitKomponenten trennen & InitListener trennen (für Teekanne neu ergänzen)
+        6. alles im Konstruktor aufrufen
+        6. zeigeTeekannenAn() vorgegeben nur anpassen und einfügen
