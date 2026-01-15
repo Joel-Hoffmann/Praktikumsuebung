@@ -1,0 +1,217 @@
+public class SportartikelView implements Observer{
+private SportartikelControl sportartikelControl;
+private TrikotsModel trikotsModel;
+private BaelleModel baelleModel;
+private Stage stage;
+//---Anfang Attribute der grafischen Oberflaeche---
+private Pane pane = new Pane();
+private Label lblAnzeigeTrikots = new Label("Anzeige Trikots");
+private Label lblAnzeigeBaelle = new Label("Anzeige Bälle");
+private TextArea txtAnzeigeTrikots = new TextArea();
+private TextArea txtAnzeigeBaelle = new TextArea();
+//-------Ende Attribute der grafischen Oberflaeche-------
+public SportartikelView(SportartikelControl sportartikelControl,
+Stage stage, TrikotsModel trikotsModel, BaelleModel baelleModel){
+Scene scene = new Scene(this.pane, 640, 340);
+…
+this.sportartikelControl = sportartikelControl;
+this.trikotsModel = trikotsModel;
+this.trikotsModel.addObserver(this);
+this.baelleModel = baelleModel;
+this.baelleModel.addObserver(this);
+this.stage = stage;
+this.initKomponentenTrikots();
+this.initKomponentenBaelle();
+this.initListenerTrikots();
+this.initListenerBaelle();
+}
+private void initKomponentenTrikots(){
+// Label
+Font font = new Font("Arial", 20);
+lblAnzeigeTrikots.setLayoutX(20);
+lblAnzeigeTrikots.setLayoutY(40);
+lblAnzeigeTrikots.setFont(font);
+lblAnzeigeTrikots.setStyle("-fx-font-weight: bold;");
+pane.getChildren().add(lblAnzeigeTrikots);
+// Textbereiche
+txtAnzeigeTrikots.setEditable(false);
+txtAnzeigeTrikots.setLayoutX(20);
+txtAnzeigeTrikots.setLayoutY(90);
+txtAnzeigeTrikots.setPrefWidth(270);
+txtAnzeigeTrikots.setPrefHeight(185);
+pane.getChildren().add(txtAnzeigeTrikots);
+}
+
+private void initKomponentenBaelle(){
+// Label
+Font font = new Font("Arial", 20);
+lblAnzeigeBaelle.setLayoutX(310);
+lblAnzeigeBaelle.setLayoutY(40);
+lblAnzeigeBaelle.setFont(font);
+lblAnzeigeBaelle.setStyle("-fx-font-weight: bold;");
+pane.getChildren().add(lblAnzeigeBaelle);
+// Textbereiche
+txtAnzeigeBaelle.setEditable(false);
+txtAnzeigeBaelle.setLayoutX(310);
+txtAnzeigeBaelle.setLayoutY(90);
+txtAnzeigeBaelle.setPrefWidth(300);
+txtAnzeigeBaelle.setPrefHeight(185);
+pane.getChildren().add(txtAnzeigeBaelle);
+}
+private void initListenerTrikots() {
+stage.setOnCloseRequest(
+e -> SportartikelView.this.trikotsModel
+.removeObserver(SportartikelView.this));
+}
+private void initListenerBaelle() {
+stage.setOnCloseRequest(
+e -> SportartikelView.this.baelleModel
+.removeObserver(SportartikelView.this));
+}
+public void update() {
+zeigeTrikotsAn();
+zeigeBaelleAn();
+private void zeigeTrikotsAn() {
+txtAnzeigeTrikots.setText(trikotsModel.gibTrikotsZurueck('|'));
+}
+}
+private void zeigeBaelleAn() {
+String text = "";
+// Ersetzen der for-Schleife durch eine for each-Schleife ist
+// nur moeglich, wenn SportartikelListe eine Instanz von Iterable
+// ist.
+for(int i = 0; i < baelleModel.getBaelle().getAnzahlSportartikel();
+i++) {
+text = text + baelleModel.getBaelle()
+.getSportartikel(i).gibBallZurueck('|') + "\n";
+}
+txtAnzeigeBaelle.setText(text);
+zeigeInformationsfensterAn("Beachten Sie die Anzeige der Bälle!");
+}
+
+
+private void zeigeInformationsfensterAn(String meldung){
+new MeldungsfensterAnzeiger(AlertType.INFORMATION,
+"Information", meldung).zeigeMeldungsfensterAn();
+}
+}
+7.2.2 Liskovsches Substitutionsprinzip
+Löschen der Attribute und get- und set-Methoden zu Einkaufsdatum und Preis in der
+Klasse Trikot.
+Folgende Änderung ist nicht notwendig, bietet sich aber an zur Erfüllung des
+Interface Segregation Principle.
+In der Klasse TrikotModel:
+private ArrayList<Trikot> trikots = new ArrayList <>();
+private SportartikelListe<Trikot> trikots = new SportartikelListe<>();
+Es müssen dann noch kleine Anpassungen in der Klasse vorgenommen werden.
+7.3.1 Pattern Extract Method
+In der Klasse Sportartikel:
+protected String gibZurueck(char trenner) {
+return (this.getEinkaufsdatum() + "") + trenner
++ this.getPreis();
+}
+In der Klasse Ball:
+public String gibZurueck(char trenner) {
+return this.getMaterial() + trenner
++ this.getSportart() + trenner + this.getStatus() + trenner
++ this.getNutzung() + trenner + super.gibZurueck(trenner);
+}
+In der Klasse Trikot:
+public String gibZurueck(char trenner) {
+return this.getTrikotnummer() + (trenner + "")
++ this.getGroesse() + trenner
++ super.gibZurueck(trenner);
+}
+
+
+
+7.3.2 Pattern Chain Constructor
+In der Klasse Trikot:
+public Trikot(int trikotnummer, int groesse, double preis,
+int einkaufsdatum) {
+this(trikotnummer, preis, einkaufsdatum);
+this.groesse = groesse;
+}
+public Trikot(int trikotnummer, double preis, int einkaufsdatum) {
+super(einkaufsdatum, preis);
+this.trikotnummer = trikotnummer;
+}
+In der Klasse TrikotModel:
+// Nur zum Test (Dummies)
+public void fetchDummyTrikots() {
+this.trikots.addSportartikel(new Trikot(10, 40, 49.90, 20200601));
+this.trikots.addSportartikel(new Trikot(7, 0, 65.90, 20200601));
+notifyObservers();
+}
+
+
+7.4 sonstiges
+Interface Observer
+public interface Observer {
+public void update(Observable obs);
+}
+In Klasse SportartikelView
+public void update(Observable obs) {
+if(obs.getClass().getSimpleName().equals("TrikotsModel")) {
+zeigeTrikotsAn();
+if(obs.getClass().getSimpleName().equals("BaelleModel")) {
+zeigeBaelleAn();
+}
+}
+}
+In Klasse BaelleView
+public void update(Observable obs){
+if(obs.getClass().getSimpleName().equals("BaelleModel")) {
+cmbBxEinkaufdatum.getItems().clear();
+// Ersetzen der for-Schleife durch eine for each-Schleife ist
+// nur moeglich, wenn SportartikelListe eine Instanz von Iterable
+// ist.
+for(int i = 0;
+i < baelleModel.getBaelle().getAnzahlSportartikel(); i++) {
+cmbBxEinkaufdatum.getItems().add(
+baelleModel.getBaelle().getSportartikel(i)
+.getEinkaufsdatum() + "");
+}
+}
+}
+In Klassen TrikotsModel und BaelleModel
+public void notifyObservers(){
+for(int i = 0; i < this.observers.size(); i++){
+this.observers.elementAt(i).update(this);
+}
+}
+
+
+clean Code
+→ Regeln für gut lesbaren, wartbaren Code
+
+1OSP
+→ Methode macht entweder
+→ Logik oder Integration (UI, Fehler Ausgabe)
+→ nie beides
+DRY – Don’t Repeat Yourself
+→ gleicher Code darf nicht mehrfach existieren
+→ zwei Methoden, zwei Mal Buffered Reader…
+Chain Constructor
+→ ein Konstruktor erledigt die Arbeit, die anderen delegieren
+→ this(v, n, null)
+→ damit kein Code doppelt
+
+SOLID
+→ Regeln für gutes objektorientiertes Design
+Single Responsibility (SRP)
+→ eine Klasse sollte nur einen Grund haben, geändert zu werden
+Open Closed Principle
+→ Code soll erweiterbar sein ohne ihn zu ändern, z. B. mit Vererbung / Polymorphie
+Liskov Substitution Principle
+→ Unterklasse muss überall dort einsetzbar sein,
+wo die Oberklasse erwartet wird (Schraubendreher, Schleifgerät)
+Interface Segregation Principle
+→ Interfaces sollen klein sein
+→ eine Klasse soll nur Methoden implementieren müssen,
+die sie wirklich braucht
+Dependency Inversion Principle
+→ „High Level Code“ arbeitet eher mit Interfaces
+als mit konkreten Klassen
+
+
